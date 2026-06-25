@@ -17,21 +17,23 @@ def call(Map config=[:]){
                 writer.writeLine(file.name + '\t' + file.length());
             }
         }
-    }
 
-    def date = new Date();
-    def sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-    echo "Date and Time is: " + sdf.format(date)
+        def date = new Date();
+        def sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        writer.writeLine("Date and Time is: " + sdf.format(date));
 
-    echo "Buil Number is ${BUILD_NUMBER}";
+        writer.writeLine("Buil Number is ${BUILD_NUMBER}");
 
-    def changeLogSets = currentBuild.changeSets;
-    for(change in changeLogSets){
-        def entries = change.items;
-        for(entry in entries){
-            echo "${entry.commitID} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}"
-            for(file in entry.affectedFiles){
-                echo "  ${file.editType.name} ${file.path}";
+        if(config.changes != "false"){
+            def changeLogSets = currentBuild.changeSets;
+            for(change in changeLogSets){
+                def entries = change.items;
+                for(entry in entries){
+                    writer.writeLine("${entry.commitID} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}");
+                    for(file in entry.affectedFiles){
+                        writer.writeLine("  ${file.editType.name} ${file.path}");
+                    }
+                }
             }
         }
     }
