@@ -29,7 +29,7 @@ def call(Map config=[:]){
             for(change in changeLogSets){
                 def entries = change.items;
                 for(entry in entries){
-                    writer.writeLine("${entry.commitID} by ${entry.author} on ${new Date(entry.timestamp)}: ${entry.msg}");
+                    writer.writeLine("${entry.getCommitId()} by ${entry.getAuthor()} on ${new Date(entry.getTimestamp())}: ${entry.getMsg()}");
                     for(file in entry.affectedFiles){
                         writer.writeLine("  ${file.editType.name} ${file.path}");
                     }
