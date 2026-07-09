@@ -12,12 +12,12 @@ def call(Map cfg = [:]) {
         error "parametro obbligatorio mancante: projectFile"
     }
 
-    bat '''
+    bat """
         "%TESTRUNNER_PATH%\\testrunner.bat" ^
         -e${#TestSuite#${cfg.endPoint}} ^
         -r -J -s${cfg.testSuite} -S ^
-        -PprojectPropertiesPath="%WORKSPACE%\\${cfg.propertiesFile}" ^
+        -PprojectPropertiesPath="%WORKSPACE%\\"${cfg.propertiesFile} ^
         -PprojectPathTestRunner="%WORKSPACE%" ^
         "%WORKSPACE%\\${cfg.projectFile}"
-    '''
+    """
 }
