@@ -5,6 +5,9 @@ def call(Map cfg = [:]) {
     if(!cfg.testSuite) {
         error "parametro obbligatorio mancante: testSuite"
     }
+    if(!cfg.testrunnerPath) {
+        error "parametro obbligatorio mancante: testrunnerPath"
+    }
     if(!cfg.propertiesFile) {
         error "parametro obbligatorio mancante: propertiesFile"
     }
@@ -13,8 +16,8 @@ def call(Map cfg = [:]) {
     }
 
     bat """
-        "%TESTRUNNER_PATH%\\testrunner.bat" ^
-        -e\${#TestSuite#${cfg.endPoint}} ^
+        "${cfg.testrunnerPath}\\testrunner.bat" ^
+        -e\${${cfg.endPoint}} ^
         -r -J -s${cfg.testSuite} -S ^
         -PprojectPropertiesPath="%WORKSPACE%\\${cfg.propertiesFile}" ^
         -PprojectPathTestRunner="%WORKSPACE%" ^
