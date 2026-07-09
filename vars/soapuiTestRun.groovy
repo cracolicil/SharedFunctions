@@ -16,7 +16,7 @@ def call(Map cfg = [:]) {
         "%TESTRUNNER_PATH%\\testrunner.bat" ^
         -e\${#TestSuite#${cfg.endPoint}} ^
         -r -J -s${cfg.testSuite} -S ^
-        -PprojectPropertiesPath="%WORKSPACE%\\"${cfg.propertiesFile} ^
+        -PprojectPropertiesPath="%WORKSPACE%\\${cfg.propertiesFile}" ^
         -PprojectPathTestRunner="%WORKSPACE%" ^
         "%WORKSPACE%\\${cfg.projectFile}"
     """
