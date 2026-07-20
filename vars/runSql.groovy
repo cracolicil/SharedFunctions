@@ -22,11 +22,13 @@ def call(Map cfg = [:]){
         error "runSql: version non valorizzato"
     }
 
+    def cartellaRilasciati = cfg.sharedFolderBase + "\\" + cfg.sharedFolderProject
+
     // Recupera lista di tutti i file sql da eseguire in ordine
     def listaSql = powershell(
         returnStdout: true,
         script: """
-            (Get-ChildItem -Path '${env.CARTELLA_RILASCIATI}' -Filter *.sql |
+            (Get-ChildItem -Path '${cartellaRilasciati}' -Filter *.sql |
             ForEach-Object{
                 if ((\$_.Name.Split('_')[0] -as [int]) -eq \$null) 
                     {
@@ -43,19 +45,19 @@ def call(Map cfg = [:]){
 
     // Se non ci sono istruzioni sql avvisa l'utente
     if (!listaSql) {
-        echo "Nessun file .sql trovato nella cartella: ${env.CARTELLA_RILASCIATI}"
+        echo "Nessun file .sql trovato nella cartella: ${cartellaRilasciati}"
     }
 
     def listaDaEseguire = listaSql.split(',')
 
     withEnv([
-        "SQLCMD_SERVER=${cfg.dbInfo.server}",
-        "SQLCMD_DATABASE=${cfg.dbInfo.database}",
+        "SQLCMD_SERVER=${cfg.server}",
+        "SQLCMD_DATABASE=${cfg.database}",
 
     ]){
         withCredentials([
                 usernamePassword(
-                    credentialsId: "${cfg.dbInfo.credentialsId}",
+                    credentialsId: "${cfg.credentialsId}",
                     usernameVariable: 'DB_USER',
                     passwordVariable: 'DB_PASS'
                 )
