@@ -5,6 +5,7 @@ def call(Map cfg = [:]){
     }
 }
 
+echo "${cfg.cartellaScripts}"
 
 // Recupera gli script da avviare in sequenza
 def listaScript = powershell(
